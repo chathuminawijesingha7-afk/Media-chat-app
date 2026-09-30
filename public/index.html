@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#080808">
+  <title>Mono Chat</title>
+  <link rel="stylesheet" href="/styles.css">
+  <script src="/socket.io/socket.io.js" defer></script>
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <div class="app-shell">
+    <section id="authView" class="auth-view">
+      <div class="auth-card">
+        <div class="brand-lockup">
+          <div class="brand-mark">M</div>
+          <div><div class="eyebrow">PRIVATE MESSAGING</div><h1>Mono Chat</h1></div>
+        </div>
+        <p class="auth-lead">Fast, focused conversations. Built for multiple accounts and real-time messaging.</p>
+
+        <div class="auth-tabs" role="tablist">
+          <button class="auth-tab active" data-auth-tab="login" type="button">Sign in</button>
+          <button class="auth-tab" data-auth-tab="register" type="button">Create account</button>
+        </div>
+
+        <form id="loginForm" class="auth-form" autocomplete="on">
+          <label>Username or email<input id="loginIdentifier" required autocomplete="username" placeholder="you@example.com"></label>
+          <label>Password<input id="loginPassword" required type="password" autocomplete="current-password" placeholder="••••••••"></label>
+          <button class="primary-btn" type="submit">Enter workspace <span>↗</span></button>
+        </form>
+
+        <form id="registerForm" class="auth-form hidden" autocomplete="on">
+          <div class="two-col">
+            <label>Display name<input id="registerName" required autocomplete="name" placeholder="Alex Morgan"></label>
+            <label>Username<input id="registerUsername" required autocomplete="username" placeholder="alexm"></label>
+          </div>
+          <label>Email<input id="registerEmail" required type="email" autocomplete="email" placeholder="alex@example.com"></label>
+          <label>Password<input id="registerPassword" required type="password" autocomplete="new-password" placeholder="At least 8 characters"></label>
+          <button class="primary-btn" type="submit">Create account <span>↗</span></button>
+        </form>
+        <div id="authError" class="form-message"></div>
+        <div class="security-note"><span class="dot"></span> Passwords are stored as secure hashes. Sessions use an HTTP-only cookie.</div>
+      </div>
+    </section>
+
+    <section id="chatView" class="chat-view hidden">
+      <aside class="sidebar">
+        <div class="sidebar-top">
+          <div class="profile-mini">
+            <div id="meAvatar" class="avatar avatar-lg">M</div>
+            <div class="profile-copy"><strong id="meName">You</strong><span id="meUsername">@user</span></div>
+          </div>
+          <div class="top-actions">
+            <button id="soundToggle" class="icon-btn active" title="Toggle message sound" aria-label="Toggle message sound">♪</button>
+            <button id="logoutBtn" class="icon-btn" title="Sign out" aria-label="Sign out">↪</button>
+          </div>
+        </div>
+
+        <div class="search-wrap">
+          <span class="search-icon">⌕</span>
+          <input id="userSearch" placeholder="Search people" aria-label="Search people">
+          <kbd>⌘K</kbd>
+        </div>
+
+        <div class="section-heading"><span>People</span><span id="peopleCount" class="count-pill">0</span></div>
+        <div id="peopleList" class="people-list"></div>
+      </aside>
+
+      <main class="conversation-pane">
+        <div id="emptyState" class="empty-state">
+          <div class="empty-icon">◌</div>
+          <h2>Choose a conversation</h2>
+          <p>Pick someone from the people list to start a private chat.</p>
+        </div>
+
+        <div id="conversation" class="conversation hidden">
+          <header class="conversation-header">
+            <div class="conversation-person">
+              <div id="chatAvatar" class="avatar">C</div>
+              <div><strong id="chatName">Contact</strong><span id="chatStatus">Offline</span></div>
+            </div>
+            <div class="header-actions">
+              <button id="clearSearchBtn" class="soft-btn hidden" type="button">Clear search</button>
+              <div class="connection-state"><span id="connectionDot" class="dot"></span><span id="connectionText">Connecting</span></div>
+            </div>
+          </header>
+
+          <div id="messages" class="messages" aria-live="polite"></div>
+          <div id="typingIndicator" class="typing-indicator hidden"><span></span><span></span><span></span><b id="typingText">Typing…</b></div>
+
+          <form id="messageForm" class="composer">
+            <textarea id="messageInput" rows="1" maxlength="4000" placeholder="Write a message… (Enter to send)" aria-label="Message"></textarea>
+            <div class="composer-bar">
+              <span id="charCount">0 / 4000</span>
+              <div class="composer-actions"><button id="emojiBtn" class="icon-btn" type="button" title="Insert smiley">☺</button><button class="send-btn" type="submit">Send <span>↑</span></button></div>
+            </div>
+          </form>
+        </div>
+      </main>
+    </section>
+  </div>
+  <div id="toast" class="toast"></div>
+</body>
+</html>

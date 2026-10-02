@@ -16,8 +16,8 @@ services:
       - mongo
     environment:
       PORT: 3000
-      MONGODB_URI: mongodb://mongo:27017/mono_chat
-      JWT_SECRET: change-this-to-a-long-random-secret
+      MONGODB_URI: mongodb+srv://chathumina:Chathumina@cluster0.9ubxuan.mongodb.net/
+      JWT_SECRET: 8fK2mQ9xV7pL4nZ6cR1tY5wB3sD8hJ0kX9mN2qP7
       NODE_ENV: production
     ports:
       - "3000:3000"

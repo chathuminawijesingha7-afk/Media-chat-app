@@ -1,7 +1,7 @@
 {
   "name": "mono-chat",
-  "version": "1.0.0",
-  "description": "Professional black-and-white multi-user real-time chat app using Express, MongoDB and Socket.IO.",
+  "version": "2.0.0",
+  "description": "Express Socket.IO Firestore chat app",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
@@ -15,9 +15,9 @@
     "cookie-parser": "^1.4.7",
     "dotenv": "^17.2.2",
     "express": "^5.1.0",
+    "firebase-admin": "^13.5.0",
     "helmet": "^8.1.0",
     "jsonwebtoken": "^9.0.2",
-    "mongoose": "^8.18.0",
     "socket.io": "^4.8.1"
   },
   "devDependencies": {

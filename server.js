@@ -59,7 +59,7 @@ app.get('/api/chats/:partnerId/messages',auth,async(req,res,next)=>{try{
  const limit=Math.min(Math.max(Number(req.query.limit)||80,1),120),snap=await q.limit(limit).get();
  res.json({messages:snap.docs.map(d=>showMsg({id:d.id,...d.data()})).reverse(),hasMore:snap.size===limit});
 }catch(e){next(e)}});
-async function markRead(id,pid){const unread=await feed(id).where('sender','==',pid).where('readAt','==',null).limit(100).get(),now=new Date();
+async function markRead(id,pid){const recent=await feed(id).orderBy('createdAt','desc').limit(300).get(),unread={docs:recent.docs.filter(d=>d.data().sender===pid&&!d.data().readAt).slice(0,100),size:0},now=new Date();unread.size=unread.docs.length;
  for(let i=0;i<unread.docs.length;i+=100){const batch=db.batch();for(const d of unread.docs.slice(i,i+100)){for(const ref of [d.ref,feed(pid).doc(d.id),chats.doc(pair(id,pid)).collection('messages').doc(d.id)])batch.update(ref,{readAt:now})}await batch.commit()}
  return {updated:unread.size,readAt:now.toISOString()}}
 app.post('/api/chats/:partnerId/read',auth,async(req,res,next)=>{try{const pid=req.params.partnerId;if(!valid(pid))return res.status(400).json({error:'Invalid user id.'});const r=await markRead(req.user.id,pid);io.to('user:'+pid).emit('message:read',{byUserId:req.user.id,partnerId:pid,readAt:r.readAt});res.json({updated:r.updated})}catch(e){next(e)}});

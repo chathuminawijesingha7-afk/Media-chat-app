@@ -1,26 +1,8 @@
 services:
-  mongo:
-    image: mongo:8.0
-    container_name: mono-chat-mongo
-    restart: unless-stopped
-    ports:
-      - "27017:27017"
-    volumes:
-      - mongo_data:/data/db
-
   app:
     build: .
-    container_name: mono-chat-app
-    restart: unless-stopped
-    depends_on:
-      - mongo
-    environment:
-      PORT: 3000
-      MONGODB_URI: mongodb+srv://chathumina:Chathumina@cluster0.9ubxuan.mongodb.net/
-      JWT_SECRET: 8fK2mQ9xV7pL4nZ6cR1tY5wB3sD8hJ0kX9mN2qP7
-      NODE_ENV: production
     ports:
-      - "3000:3000"
-
-volumes:
-  mongo_data:
+      - '3000:3000'
+    env_file:
+      - .env
+    restart: unless-stopped
